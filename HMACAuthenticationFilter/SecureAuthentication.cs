@@ -33,19 +33,25 @@ namespace HMACAuthenticationFilter
         private HttpRequestMessage _currentRequest;
         private HttpAuthenticationContext _currentContext;
 
-        public SecureAuthentication(IDictionary<string, string> allowedAppCredentials, string applicationScheme, ILogger logger)
+              public SecureAuthentication(string applicationScheme, Type type, params string[] colonSeparatedAppIdsAndApiKeys)
         {
-            foreach (var app in allowedAppCredentials)
+            _authenticationScheme = applicationScheme;
+
+            ILogger logger = Activator.CreateInstance(type) as ILogger;
+            if (logger == null)
+                throw new InvalidCastException("Logger Type must inherit from ILogger in NuGet Package");
+            _logger = logger;
+
+            var allowedAppCredentials = new Dictionary<string, string>();
+            foreach(var colonSeparatedAppCredential in colonSeparatedAppIdsAndApiKeys)
             {
-                var appId = app.Key;
-                var apiKey = app.Value;
+                var splitAppCredential = colonSeparatedAppCredential.Split(':');
+                var appId = splitAppCredential[0];
+                var apiKey = splitAppCredential[1];
 
                 if (!AllowedApps.ContainsKey(appId))
                     AllowedApps.Add(appId, apiKey);
             }
-            _authenticationScheme = applicationScheme;
-            _logger = logger;
-          
         }
 
         public Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
