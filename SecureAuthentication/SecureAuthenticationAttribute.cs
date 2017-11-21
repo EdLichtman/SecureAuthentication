@@ -14,6 +14,7 @@ using System.Runtime.Caching;
 using System.Web.Http;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Configuration;
 
 namespace HMACAuthenticationFilter
 {
@@ -33,9 +34,10 @@ namespace HMACAuthenticationFilter
         private HttpRequestMessage _currentRequest;
         private HttpAuthenticationContext _currentContext;
 
-              public SecureAuthenticationAttribute(string applicationScheme, Type type, params string[] colonSeparatedAppIdsAndApiKeys)
+              public SecureAuthenticationAttribute(Type type)
         {
-            _authenticationScheme = applicationScheme;
+            _authenticationScheme = ConfigurationManager.AppSettings["SecureApplicationSchema"];
+            var colonSeparatedAppIdsAndApiKeys = ConfigurationManager.AppSettings["SecureApplicationCredentials"];
 
             ILogger logger = Activator.CreateInstance(type) as ILogger;
             if (logger == null)
@@ -43,7 +45,7 @@ namespace HMACAuthenticationFilter
             _logger = logger;
 
             var allowedAppCredentials = new Dictionary<string, string>();
-            foreach(var colonSeparatedAppCredential in colonSeparatedAppIdsAndApiKeys)
+            foreach(var colonSeparatedAppCredential in colonSeparatedAppIdsAndApiKeys.Split(';'))
             {
                 var splitAppCredential = colonSeparatedAppCredential.Split(':');
                 var appId = splitAppCredential[0];
