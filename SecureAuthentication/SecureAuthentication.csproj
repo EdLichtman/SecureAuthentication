@@ -6,17 +6,19 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.Webapi" Version="5.2.3" />
+    <PackageReference Include="Newtonsoft.json" Version="6.0.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Runtime.Caching" />
+<ItemGroup>
     <Reference Include="System.Web" />
+    <Reference Include="System.Runtime.Caching" />
   </ItemGroup>
+  
 
    <PropertyGroup>
-      <TargetFramework>net461</TargetFramework>
+      <TargetFrameworks>net452;net461</TargetFrameworks>
       <PackageId>AuthenticationFilters.SecureAttributes</PackageId>
-      <PackageVersion>0.0.3</PackageVersion>
+      <PackageVersion>0.5.0</PackageVersion>
       <Authors>Edward Lichtman</Authors>
       <Description>Secure Authentication Filter Library</Description>
       <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

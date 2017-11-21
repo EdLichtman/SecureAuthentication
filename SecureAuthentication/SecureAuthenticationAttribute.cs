@@ -17,7 +17,7 @@ using System.Net.Http.Headers;
 
 namespace HMACAuthenticationFilter
 {
-    public class SecureAuthentication: Attribute, IAuthenticationFilter
+    public class SecureAuthenticationAttribute: Attribute, IAuthenticationFilter
     {
         const int AppIdIndex = 0;
         const int IncomingHashedSignatureIndex = 1;
@@ -33,7 +33,7 @@ namespace HMACAuthenticationFilter
         private HttpRequestMessage _currentRequest;
         private HttpAuthenticationContext _currentContext;
 
-              public SecureAuthentication(string applicationScheme, Type type, params string[] colonSeparatedAppIdsAndApiKeys)
+              public SecureAuthenticationAttribute(string applicationScheme, Type type, params string[] colonSeparatedAppIdsAndApiKeys)
         {
             _authenticationScheme = applicationScheme;
 
