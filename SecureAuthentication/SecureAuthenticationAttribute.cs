@@ -15,6 +15,7 @@ using System.Web.Http;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Configuration;
+using SecureAuthentication;
 
 namespace HMACAuthenticationFilter
 {
@@ -34,22 +35,22 @@ namespace HMACAuthenticationFilter
         private HttpRequestMessage _currentRequest;
         private HttpAuthenticationContext _currentContext;
 
-              public SecureAuthenticationAttribute(Type type)
+              public SecureAuthenticationAttribute(Type typeOfApplicationCredentialsConfig, Type typeOfLogger)
         {
-            _authenticationScheme = ConfigurationManager.AppSettings["SecureApplicationSchema"];
-            var colonSeparatedAppIdsAndApiKeys = ConfigurationManager.AppSettings["SecureApplicationCredentials"];
+            var applicationConfiguration = Activator.CreateInstance(typeOfApplicationCredentialsConfig) as IApplicationCredentialsConfiguration;
+            _authenticationScheme = applicationConfiguration.GetApplicationSchema();
+            var appCredentials = applicationConfiguration.GetApplicationCredentials();
 
-            ILogger logger = Activator.CreateInstance(type) as ILogger;
+            ILogger logger = Activator.CreateInstance(typeOfLogger) as ILogger;
             if (logger == null)
                 throw new InvalidCastException("Logger Type must inherit from ILogger in NuGet Package");
             _logger = logger;
 
             var allowedAppCredentials = new Dictionary<string, string>();
-            foreach(var colonSeparatedAppCredential in colonSeparatedAppIdsAndApiKeys.Split(';'))
+            foreach(var appCredential in appCredentials)
             {
-                var splitAppCredential = colonSeparatedAppCredential.Split(':');
-                var appId = splitAppCredential[0];
-                var apiKey = splitAppCredential[1];
+                var appId = appCredential.AppId;
+                var apiKey = appCredential.ApiKey;
 
                 if (!AllowedApps.ContainsKey(appId))
                     AllowedApps.Add(appId, apiKey);
