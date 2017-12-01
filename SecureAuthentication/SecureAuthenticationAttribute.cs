@@ -17,7 +17,7 @@ using System.Net.Http.Headers;
 using System.Configuration;
 using SecureAuthentication;
 
-namespace HMACAuthenticationFilter
+namespace SecureAuthentication
 {
     public class SecureAuthenticationAttribute: Attribute, IAuthenticationFilter
     {
@@ -38,6 +38,8 @@ namespace HMACAuthenticationFilter
               public SecureAuthenticationAttribute(Type typeOfApplicationCredentialsConfig, Type typeOfLogger)
         {
             var applicationConfiguration = Activator.CreateInstance(typeOfApplicationCredentialsConfig) as IApplicationCredentialsConfiguration;
+            if (applicationConfiguration == null)
+                throw new InvalidCastException("ApplicationCredentials Type must inherit from ILogger in NuGet Package");
             _authenticationScheme = applicationConfiguration.GetApplicationSchema();
             var appCredentials = applicationConfiguration.GetApplicationCredentials();
 

@@ -23,5 +23,12 @@ namespace SecureAuthentication
         {
             return await _client.GetAsync($"{BaseUri}/{endpoint}");
         }
+        
+        public async Task<HttpResponseMessage> PostJsonAsync(string endpoint, object body)
+        {
+
+            return await _client.PostAsJsonAsync<object>($"{BaseUri}/{endpoint}", body);
+        }
+        
     }
 }

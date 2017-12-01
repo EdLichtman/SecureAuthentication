@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace HMACAuthenticationFilter
+namespace SecureAuthentication
 {
     public class SecureRequestThumbprint
     {

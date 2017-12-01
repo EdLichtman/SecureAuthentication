@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HMACAuthenticationFilter
+namespace SecureAuthentication
 {
     public interface ILogger
     {

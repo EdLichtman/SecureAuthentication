@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace HMACAuthenticationFilter
+namespace SecureAuthentication
 {
     public class IncomingRequest
     {
