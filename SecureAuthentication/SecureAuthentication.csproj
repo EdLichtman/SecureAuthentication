@@ -19,11 +19,11 @@
    <PropertyGroup>
       <TargetFrameworks>net452;net461</TargetFrameworks>
       <PackageId>AuthenticationFilters.SecureAttributes</PackageId>
-      <PackageVersion>0.5.0</PackageVersion>
+      <PackageVersion>1.0.1</PackageVersion>
       <Authors>Edward Lichtman</Authors>
       <Description>Secure Authentication Filter Library</Description>
       <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-      <PackageReleaseNotes>First release</PackageReleaseNotes>
+      <PackageReleaseNotes>Added SecureAuthentication Keys Generator</PackageReleaseNotes>
       <Copyright>Copyright 2017 (c) Contoso Corporation. All rights reserved.</Copyright>
       <PackageTags>Security Cryptography HMAC</PackageTags>
       <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

@@ -74,6 +74,7 @@ namespace SecureAuthentication
             }
             else
                 context.ErrorResult = new NotFoundResult(context.Request);
+            //new System.Web.Http.Results.UnauthorizedResult
 
 
             return Task.FromResult(0);
