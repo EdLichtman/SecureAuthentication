@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SecureAuthentication
+namespace SecureAuthentication.Logging
 {
     public class IncomingRequest
     {

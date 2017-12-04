@@ -1,9 +1,9 @@
 ﻿using System;
-using SecureAuthentication;
+using SecureAuthentication.Logging;
 
 namespace SecureAuthentication.Unit.Tests
 {
-    internal class TestLogger : ILogger
+    internal class TestLogger : ISecureAuthenticationLogger
     {
         public void Warning(string message, Exception ex)
         {

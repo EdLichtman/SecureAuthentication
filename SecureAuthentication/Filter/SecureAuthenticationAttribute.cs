@@ -14,10 +14,10 @@ using System.Runtime.Caching;
 using System.Web.Http;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Configuration;
-using SecureAuthentication;
+using SecureAuthentication.Credentials;
+using SecureAuthentication.Logging;
 
-namespace SecureAuthentication
+namespace SecureAuthentication.Filter
 {
     public class SecureAuthenticationAttribute: Attribute, IAuthenticationFilter
     {
@@ -30,12 +30,17 @@ namespace SecureAuthentication
 
         private readonly UInt64 requestMaxAgeInSeconds = 300;  //5 mins
         private readonly string _authenticationScheme;
-        private readonly ILogger _logger;
+        private readonly ISecureAuthenticationLogger _logger;
 
         private HttpRequestMessage _currentRequest;
         private HttpAuthenticationContext _currentContext;
 
-              public SecureAuthenticationAttribute(Type typeOfApplicationCredentialsConfig, Type typeOfLogger)
+        public SecureAuthenticationAttribute(Type typeOfApplicationCredentialsConfig) 
+            : this(typeOfApplicationCredentialsConfig, null)
+        {
+
+        }
+        public SecureAuthenticationAttribute(Type typeOfApplicationCredentialsConfig, Type typeOfLogger)
         {
             var applicationConfiguration = Activator.CreateInstance(typeOfApplicationCredentialsConfig) as IApplicationCredentialsConfiguration;
             if (applicationConfiguration == null)
@@ -43,10 +48,8 @@ namespace SecureAuthentication
             _authenticationScheme = applicationConfiguration.GetApplicationSchema();
             var appCredentials = applicationConfiguration.GetApplicationCredentials();
 
-            ILogger logger = Activator.CreateInstance(typeOfLogger) as ILogger;
-            if (logger == null)
-                throw new InvalidCastException("Logger Type must inherit from ILogger in NuGet Package");
-            _logger = logger;
+            ISecureAuthenticationLogger logger = Activator.CreateInstance(typeOfLogger) as ISecureAuthenticationLogger;
+            _logger = logger ?? throw new InvalidCastException("Logger Type must inherit from ILogger in NuGet Package");
 
             var allowedAppCredentials = new Dictionary<string, string>();
             foreach(var appCredential in appCredentials)

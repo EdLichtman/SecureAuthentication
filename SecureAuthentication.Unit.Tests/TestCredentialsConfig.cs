@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SecureAuthentication;
+using SecureAuthentication.Credentials;
 
 namespace SecureAuthentication.Unit.Tests
 {

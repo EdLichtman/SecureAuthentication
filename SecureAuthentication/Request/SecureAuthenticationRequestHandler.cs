@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Configuration;
 using System.Web;
 
-namespace SecureAuthentication
+namespace SecureAuthentication.Request
 {
     public class SecureAuthenticationRequestHandler : DelegatingHandler
     {

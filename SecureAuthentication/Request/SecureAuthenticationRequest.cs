@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace SecureAuthentication
+namespace SecureAuthentication.Request
 {
     public class SecureAuthenticationRequest
     {

@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace SecureAuthentication
+namespace SecureAuthentication.Filter
 {
     public class SecureRequestThumbprint
     {
