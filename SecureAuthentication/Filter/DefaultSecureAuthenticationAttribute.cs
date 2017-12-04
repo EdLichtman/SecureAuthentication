@@ -9,10 +9,5 @@ namespace SecureAuthentication.Filter
             : base(typeof(DefaultApplicationCredentialConfiguration))
         {
         }
-
-        public DefaultSecureAuthenticationAttribute(Type typeOfLogger) 
-            : base(typeof(DefaultApplicationCredentialConfiguration), typeOfLogger)
-        {
-        }
     }
 }

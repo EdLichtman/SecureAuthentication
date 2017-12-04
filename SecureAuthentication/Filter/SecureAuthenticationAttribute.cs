@@ -36,7 +36,7 @@ namespace SecureAuthentication.Filter
         private HttpAuthenticationContext _currentContext;
 
         public SecureAuthenticationAttribute(Type typeOfApplicationCredentialsConfig) 
-            : this(typeOfApplicationCredentialsConfig, null)
+            : this(typeOfApplicationCredentialsConfig, typeof(DummySecureAuthenticationLogger))
         {
 
         }
@@ -76,8 +76,8 @@ namespace SecureAuthentication.Filter
                 context.Principal = currentPrincipal;
             }
             else
-                context.ErrorResult = new NotFoundResult(context.Request);
-            //new System.Web.Http.Results.UnauthorizedResult
+                context.ErrorResult = new UnauthorizedResult(new AuthenticationHeaderValue[0], context.Request);
+            //context.ErrorResult = new NotFoundResult(context.Request)
 
 
             return Task.FromResult(0);
