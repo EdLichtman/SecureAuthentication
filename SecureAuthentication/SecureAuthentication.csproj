@@ -1,31 +1,29 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <!-- <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup> -->
+  <PropertyGroup>
+    <TargetFrameworks>net452;net461</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFrameworks>net452;net461</TargetFrameworks>
+    <PackageId>AuthenticationFilters.SecureAttributes</PackageId>
+    <PackageVersion>1.1.3</PackageVersion>
+    <Authors>Edward Lichtman</Authors>
+    <Description>Secure Authentication Filter Library</Description>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>Upgrades to allow netstandard2.0</PackageReleaseNotes>
+    <PackageTags>Security Cryptography HMAC</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNet.Webapi" Version="5.2.3" />
-    <PackageReference Include="Newtonsoft.json" Version="6.0.4" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.4" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="1.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
-<ItemGroup>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Runtime.Caching" />
+  <ItemGroup>
     <Reference Include="System.Configuration" />
-  </ItemGroup>
-  
-
-   <PropertyGroup>
-      <TargetFrameworks>net452;net461</TargetFrameworks>
-      <PackageId>AuthenticationFilters.SecureAttributes</PackageId>
-      <PackageVersion>1.1.2</PackageVersion>
-      <Authors>Edward Lichtman</Authors>
-      <Description>Secure Authentication Filter Library</Description>
-      <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-      <PackageReleaseNotes>Returns Unauthorized Result instead of Not Found</PackageReleaseNotes>
-      <PackageTags>Security Cryptography HMAC</PackageTags>
-      <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup> 
+  </ItemGroup>   
 
 </Project>

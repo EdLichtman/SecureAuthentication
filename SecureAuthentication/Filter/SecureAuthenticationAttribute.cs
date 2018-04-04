@@ -4,16 +4,15 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Http.Filters;
 using System.Net.Http;
-using System.Web.Http.Results;
-using System.Web;
 using System.Security.Cryptography;
 using Newtonsoft.Json;
-using System.Runtime.Caching;
-using System.Web.Http;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Web.Http;
+using System.Web.Http.Filters;
+using System.Web.Http.Results;
+using Microsoft.Extensions.Caching.Memory;
 using SecureAuthentication.Credentials;
 using SecureAuthentication.Logging;
 
@@ -26,6 +25,7 @@ namespace SecureAuthentication.Filter
         const int NonceIndex = 2;
         const int RequestTimeStampIndex = 3;
 
+        private readonly IMemoryCache _memoryCache = SingletonMemoryCache.GetInstance();
         private static readonly Dictionary<string, string> AllowedApps = new Dictionary<string, string>();
 
         private readonly UInt64 requestMaxAgeInSeconds = 300;  //5 mins
@@ -178,7 +178,7 @@ namespace SecureAuthentication.Filter
         protected async Task<bool> IsValidRequest(SecureRequestThumbprint request)
         {
             string requestContentBase64String = "";
-            string requestUri = HttpUtility.UrlEncode(request.RequestMessage.RequestUri.AbsoluteUri.ToLower());
+            string requestUri = WebUtility.UrlEncode(request.RequestMessage.RequestUri.AbsoluteUri.ToLower());
             string requestHttpMethod = request.RequestMessage.Method.Method;
 
             if (!AllowedApps.ContainsKey(request.AppId))
@@ -217,9 +217,17 @@ namespace SecureAuthentication.Filter
 
         private bool IsReplayRequest(string nonce, string requestTimeStamp)
         {
-            if (MemoryCache.Default.Contains(nonce))
+            return false;
+            IList<string> utilizedNonces;
+            if (_memoryCache.TryGetValue("nonces", out utilizedNonces))
             {
-                return true;
+                if (utilizedNonces.Contains(nonce))
+                    return true;
+            }
+            else
+            { 
+                _memoryCache.CreateEntry("nonces");
+                utilizedNonces = new List<string>();
             }
 
             DateTime epochStart = new DateTime(1970, 01, 01, 0, 0, 0, 0, DateTimeKind.Utc);
@@ -232,8 +240,8 @@ namespace SecureAuthentication.Filter
             {
                 return true;
             }
-
-            MemoryCache.Default.Add(nonce, requestTimeStamp, DateTimeOffset.UtcNow.AddSeconds(requestMaxAgeInSeconds));
+            
+            _memoryCache.Set("nonces", utilizedNonces, DateTimeOffset.UtcNow.AddSeconds(requestMaxAgeInSeconds));
 
             return false;
         }
@@ -268,6 +276,40 @@ namespace SecureAuthentication.Filter
 
         }
     }
+
+    internal class SingletonMemoryCache : IMemoryCache
+    {
+        private static readonly IMemoryCache _memoryCache = new SingletonMemoryCache();
+        public static IMemoryCache GetInstance()
+        {
+            return _memoryCache;
+        }
+
+        private SingletonMemoryCache()
+        {
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool TryGetValue(object key, out object value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICacheEntry CreateEntry(object key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Remove(object key)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class ResultWithChallenge : IHttpActionResult
     {
         private readonly string _authenticationScheme;

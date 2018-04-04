@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Configuration;
+using System.Net;
 using System.Web;
 
 namespace SecureAuthentication.Request
@@ -39,7 +40,7 @@ namespace SecureAuthentication.Request
 
             string requestContentBase64String = string.Empty;
 
-            string requestUri = HttpUtility.UrlEncode(request.RequestUri.AbsoluteUri.ToLower());
+            string requestUri = WebUtility.UrlEncode(request.RequestUri.AbsoluteUri.ToLower());
 
             string requestHttpMethod = request.Method.Method;
 

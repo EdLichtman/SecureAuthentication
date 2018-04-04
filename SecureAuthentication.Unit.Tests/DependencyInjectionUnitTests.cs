@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
-using SecureAuthentication.Filter;
 using System.Web.Http;
+using SecureAuthentication.Filter;
 
 namespace SecureAuthentication.Unit.Tests
 {
